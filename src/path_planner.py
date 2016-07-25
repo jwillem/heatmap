@@ -61,7 +61,7 @@ class PathPlannerNode(object):
         self.path_marker_pub = rospy.Publisher('visualization_marker',
                                                MarkerArray,
                                                latch=True)
-        rospy.Subscriber('odom', Odometry, self.odom_callback)
+        rospy.Subscriber('pose', Odometry, self.odom_callback)
 
         # Setup initial variables
         self.field_shape = None
@@ -311,14 +311,6 @@ class PathPlannerNode(object):
             if rospy.is_shutdown(): return
             # Print message about the waiting
             msg = "Qualification: waiting on the field shape."
-            rospy.loginfo(msg)
-            rospy.Rate(1.0).sleep()
-        # Wait for the robot position
-        while self.robot_pose == None:
-            # Check to make sure ROS is ok still
-            if rospy.is_shutdown(): return
-            # Print message about the waiting
-            msg = "Qualification: waiting on initial robot pose."
             rospy.loginfo(msg)
             rospy.Rate(1.0).sleep()
         # Now we should plan a path using the robot's initial pose
